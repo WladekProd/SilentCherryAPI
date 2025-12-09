@@ -1,8 +1,7 @@
 {
     "game1": {
         "version": "0.0.1",
-        "free_url": "https://itch.io/your_game/download",
-        "paid_url": "https://silentcherry.pp.ua/updates/paid/{token}/latest.pck",
-        "paid_url_dev": "https://pub-517567f569f24019a69235263e47e616.r2.dev/updates/paid/{token}/latest.pck"
+        "free_url": "https://itch.io/my-game",
+        "paid_url": "https://patreon.com/posts/123456789"
     },
 }
