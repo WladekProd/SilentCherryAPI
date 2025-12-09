@@ -1,7 +1,7 @@
 {
     "game1": {
         "version": "0.0.1",
-        "free_url": "https://itch.io/my-game",
-        "paid_url": "https://patreon.com/posts/123456789"
+        "update_url": "https://patreon.com/posts/123456789",
+        "demo_update_url": "https://itch.io/my-game"
     },
 }
