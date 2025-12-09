@@ -1,5 +1,7 @@
 {
-    "version": "0.0.1",
-    "free_url": "https://itch.io/your_game/download",
-    "paid_url": "https://silentcherry.pp.ua/updates/paid/{token}/latest.pck"
+    "game1": {
+        "version": "0.0.1",
+        "free_url": "https://itch.io/your_game/download",
+        "paid_url": "https://silentcherry.pp.ua/updates/paid/{token}/latest.pck"
+    },
 }
