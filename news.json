@@ -1,8 +1,14 @@
 {
     "0": {
-        "image": "",
-        "header": "",
-        "text": "",
-        "link": "",
+        "image": "https://www.piclumen.com/wp-content/uploads/2024/10/piclumen-marquee-02.webp",
+        "header": "THE TITLE!",
+        "text": "FULL TEXT FROM THE THIS NEW ITEM.\nTHIS IS THE BEST ITEM.",
+        "link": "https://www.patreon.com/cw/WladekProd",
+    },
+    "1": {
+        "image": "https://deepimg.io/images/ai-anime-generator/feature2.webp",
+        "header": "NEW 2!",
+        "text": "TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. ",
+        "link": "https://cdn.prod.website-files.com",
     },
 }
