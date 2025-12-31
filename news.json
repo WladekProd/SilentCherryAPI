@@ -1,14 +1,32 @@
 {
     "0": {
-        "image": "https://www.piclumen.com/wp-content/uploads/2024/10/piclumen-marquee-02.webp",
-        "header": "THE TITLE!",
-        "text": "FULL TEXT FROM THE THIS NEW ITEM.\nTHIS IS THE BEST ITEM.",
-        "link": "https://www.patreon.com/cw/WladekProd",
+        "image": "https://eroguysensei.com/wp-content/uploads/2022/11/WaifuFighter_Thumbnail.jpg",
+        "header": "THE ALIENS",
+        "text": "A mysterious signal has been detected far beyond our solar system. Scientists are still analyzing the data, but early results suggest an artificial origin. More details will be revealed as the investigation continues.",
+        "link": "https://www.patreon.com/cw/WladekProd"
     },
     "1": {
-        "image": "https://deepimg.io/images/ai-anime-generator/feature2.webp",
-        "header": "NEW 2!",
-        "text": "TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. TEST NEW. ",
-        "link": "https://cdn.prod.website-files.com",
+        "image": "https://n3.kemono.cr/data/13/f1/13f102bc39cdb79a4f381249f423cdb0337535303f2f904fcc8d56a8a78481bb.webp",
+        "header": "BIG UPDATE!",
+        "text": "A major update is now live, bringing new features, performance improvements, and multiple bug fixes. The team focused on stability and user experience to make everything smoother than before.",
+        "link": "https://cdn.prod.website-files.com"
     },
+    "2": {
+        "image": "https://s7.erome.com/1466/lFCN1Tng/qb7mLXQ2.jpeg",
+        "header": "KITTY JUICE",
+        "text": "A fresh and colorful addition has arrived. This update introduces new visual elements, improved animations, and small quality-of-life changes inspired by community feedback.",
+        "link": "https://cdn.prod.website-files.com"
+    },
+    "3": {
+        "image": "https://i.redd.it/ggew8i2u9ur71.jpg",
+        "header": "UPDATE v2.0",
+        "text": "Version 2.0 marks an important milestone. It includes redesigned systems, refined mechanics, and a more polished overall experience. Existing content has also been carefully rebalanced.",
+        "link": "https://cdn.prod.website-files.com"
+    },
+    "4": {
+        "image": "https://saradahentai.com/wp-content/uploads/2024/10/Hatsune-Miku-by-mitsu-art-DECO-min.jpeg",
+        "header": "NEW PAGE!",
+        "text": "A brand-new page has been launched to make navigation easier and content more accessible. Users can now explore updates, media, and announcements in a cleaner layout.",
+        "link": "https://cdn.prod.website-files.com"
+    }
 }
