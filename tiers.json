@@ -1,0 +1,55 @@
+{
+  "explorer": {
+    "name": "EXPLORER",
+    "price": "5$ / MONTH",
+    "info": "Support our project",
+    "includes": [
+      "- Sneak peek posts",
+      "- Special role in Discord 'Explorer'"
+    ],
+    "link": "https://www.patreon.com/join/SilentCherry",
+
+    "main_color": "bb5986",
+    "accent_color": "1d0522",
+    "border_width": 0.015,
+    "border_glow": 2.0,
+    
+    "arrow_count": 1,
+  },
+  "world_breaker": {
+    "name": "WORLD BREAKER",
+    "price": "10$ / MONTH",
+    "info": "Get access to the full version of the game",
+    "includes": [
+      "- All previous rewards",
+      "- Access to all games",
+      "- Fresh updates on all games",
+      "- Special Discord role 'World Breaker'",
+    ],
+    "link": "https://www.patreon.com/join/SilentCherry",
+
+    "main_color": "ea0052",
+    "accent_color": "1b0d09",
+    "border_width": 0.015,
+    "border_glow": 3.0,
+    
+    "arrow_count": 2,
+  },
+  "reality_bender": {
+    "name": "REALITY BENDER",
+    "price": "15$ / MONTH",
+    "info": "Support the project at the god level",
+    "includes": [
+      "- Participate in polls regarding new content, etc.",
+      "- Special role in Discord 'Reality Bender'"
+    ],
+    "link": "https://www.patreon.com/join/SilentCherry",
+
+    "main_color": "6b78c7",
+    "accent_color": "220023",
+    "border_width": 0.015,
+    "border_glow": 2.0,
+    
+    "arrow_count": 3,
+  },
+}
