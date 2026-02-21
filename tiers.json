@@ -19,7 +19,7 @@
   "world_breaker": {
     "name": "WORLD BREAKER",
     "price": "10$ / MONTH",
-    "info": "Get access to the full version of the game",
+    "info": "Get access to the full version",
     "includes": [
       "- All previous rewards",
       "- Access to all games",
@@ -40,7 +40,9 @@
     "price": "15$ / MONTH",
     "info": "Support the project at the god level",
     "includes": [
+      "- All previous rewards",
       "- Participate in polls regarding new content, etc.",
+      "- Mentioning your nickname in the game",
       "- Special role in Discord 'Reality Bender'"
     ],
     "link": "https://www.patreon.com/join/SilentCherry",
