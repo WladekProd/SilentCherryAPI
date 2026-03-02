@@ -3,24 +3,28 @@
         "image": "https://cdn.fileshare.ing/production/uz2x70tyrn.jpg",
         "header": "v0.1.0",
         "text": "After 3 months of development, we are pleased to present WaifuFactory v0.1.0. This release includes 21 worlds to explore and lots of other content. Thank you for playing!",
-        "link": "https://www.patreon.com/posts/waifufactory-v0-150655705?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link"
+        "link": "https://www.patreon.com/posts/waifufactory-v0-150655705?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link",
+        "shape": [1, 2]
     },
     "1": {
         "image": "https://cdn.fileshare.ing/production/q52u5my9npg.jpg",
         "header": "v0.2.0",
         "text": "I'm incredibly happy that so many people enjoyed the game! This inspired me to create a new update with many bug fixes and various additions that players requested. Thank you all for your love and support, see you in the new updates!",
-        "link": "https://www.patreon.com/posts/waifufactory-v0-151034393"
+        "link": "https://www.patreon.com/posts/waifufactory-v0-151034393",
+        "shape": [1, 1]
     },
     "2": {
         "image": "https://cdn.fileshare.ing/production/phx3i6gnwlh.jpg",
         "header": "v0.2.1",
         "text": "This is a minor update that does not add anything new. It fixes a serious bug that caused characters to fly apart when interacting with them at low FPS.",
-        "link": "https://www.patreon.com/posts/waifufactory-v0-151160415"
+        "link": "https://www.patreon.com/posts/waifufactory-v0-151160415",
+        "shape": [1, 1]
     },
     "3": {
         "image": "https://cdn.fileshare.ing/production/guboit75xav.jpg",
         "header": "v0.3.0",
         "text": "We have completed the v0.3.0 update and added a quest system at the request of most players. Now our project has a new opportunity to earn money by completing various tasks. Quests become more difficult as you progress in the game.",
-        "link": "https://www.patreon.com/posts/waifufactory-v0-151375674"
+        "link": "https://www.patreon.com/posts/waifufactory-v0-151375674",
+        "shape": [2, 1]
     },
 }
