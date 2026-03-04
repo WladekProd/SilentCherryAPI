@@ -96,7 +96,7 @@ function processPatreonData(data) {
     
     // Сохраняем в два разных файла
     fs.writeFileSync("supporters.json", JSON.stringify(sortedSupporters, null, 2));
-    fs.writeFileSync("tiers.json", JSON.stringify(sortedTiers, null, 2));
+    fs.writeFileSync("membership_tiers.json", JSON.stringify(sortedTiers, null, 2));
     
     console.log(`---DATA_START---`);
     console.log(`NEW_REFRESH_TOKEN=${newRefreshToken}`);
