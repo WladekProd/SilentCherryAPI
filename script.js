@@ -6,6 +6,31 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 const CAMPAIGN_ID = process.env.CAMPAIGN_ID;
 
+function parseHtmlToArray(html) {
+  if (!html) return [];
+  
+  let text = html.replace(/<\/p>|<\/li>|<br\s*\/?>/gi, '|||');
+  
+  text = text.replace(/<[^>]+>/g, '');
+  
+  text = text.replace(/&nbsp;/g, ' ')
+             .replace(/&amp;/g, '&')
+             .replace(/&quot;/g, '"')
+             .replace(/&#39;/g, "'")
+             .replace(/&lt;/g, '<')
+             .replace(/&gt;/g, '>');
+             
+  return text.split('|||')
+             .map(s => s.trim())
+             .filter(s => s.length > 0);
+}
+
+function formatPrice(cents) {
+  if (cents === 0) return "Free";
+  const dollars = cents / 100;
+  return '$' + (Number.isInteger(dollars) ? dollars.toString() : dollars.toFixed(2));
+}
+
 async function fetchAllTiers(token) {
   const res = await axios.get(`https://www.patreon.com/api/oauth2/v2/campaigns/${CAMPAIGN_ID}`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -38,7 +63,6 @@ async function fetchAllMembers(token) {
     if (res.data.included) {
       allIncluded.push(...res.data.included);
     }
-
     nextUrl = res.data.links?.next || null;
   }
   
@@ -47,22 +71,32 @@ async function fetchAllMembers(token) {
 
 function processPatreonData(campaignData, membersData) {
   const tiersInfo = {};
-  const allTiers = [];
-  const tiersResult = {};
+  const allTiers = []; 
+  const tiersResult = {}; 
 
   if (campaignData.included) {
     campaignData.included.forEach(item => {
       if (item.type === "tier") {
         const tierData = { id: item.id, ...item.attributes };
+        
+        if (tierData.published === false) return;
+        
+        tierData.description = parseHtmlToArray(tierData.description);
+        tierData.price_formatted = formatPrice(tierData.amount_cents);
+        
         tiersInfo[item.id] = tierData;
+        
         allTiers.push(tierData);
         
-        tiersResult[item.id] = {
-          tierId: item.id,
-          tierName: tierData.title,
-          amount_cents: tierData.amount_cents,
-          supporters: []
-        };
+        if (tierData.amount_cents > 0) {
+          tiersResult[item.id] = {
+            tierId: item.id,
+            tierName: tierData.title,
+            price: tierData.price_formatted,
+            amount_cents: tierData.amount_cents,
+            supporters: []
+          };
+        }
       }
     });
   }
@@ -123,7 +157,7 @@ function processPatreonData(campaignData, membersData) {
     console.log(`NEW_REFRESH_TOKEN=${newRefreshToken}`);
     console.log(`---DATA_END---`);
     
-    console.log("Supporters and Tiers JSONs completely updated!");
+    console.log("JSONs successfully updated with parsed HTML and formatted prices!");
   } catch (e) {
     console.error(e.response?.data || e.message);
     process.exit(1);
