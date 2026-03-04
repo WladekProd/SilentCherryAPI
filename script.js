@@ -1,60 +1,60 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const TOKEN = process.env.PATREON_TOKEN;
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 const CAMPAIGN_ID = process.env.CAMPAIGN_ID;
 
-async function fetchMembers() {
-    const response = await axios.get(
-        `https://www.patreon.com/api/oauth2/v2/campaigns/${CAMPAIGN_ID}/members`,
-        {
-            headers: {
-                Authorization: `Bearer ${TOKEN}`
-            },
-            params: {
-                include: "currently_entitled_tiers,user",
-                "fields[user]": "full_name",
-                "fields[tier]": "amount_cents"
-            }
-        }
-    );
+async function refreshToken() {
+  const res = await axios.post("https://www.patreon.com/api/oauth2/token", null, {
+    params: {
+      grant_type: "refresh_token",
+      refresh_token: REFRESH_TOKEN,
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+    },
+    headers: { "Content-Type": "application/x-www-form-urlencoded" }
+  });
+  return res.data.access_token;
+}
 
-    return response.data;
+async function fetchMembers(token) {
+  const res = await axios.get(`https://www.patreon.com/api/oauth2/v2/campaigns/${CAMPAIGN_ID}/members`, {
+    headers: { Authorization: `Bearer ${token}` },
+    params: { include: "currently_entitled_tiers,user", "fields[user]": "full_name", "fields[tier]": "amount_cents" }
+  });
+  return res.data;
 }
 
 function filterMembers(data) {
-    const tiers = {};
-    const users = {};
+  const tiers = {};
+  const users = {};
+  data.included.forEach(item => {
+    if (item.type === "tier") tiers[item.id] = item.attributes.amount_cents;
+    if (item.type === "user") users[item.id] = item.attributes.full_name;
+  });
 
-    data.included.forEach(item => {
-        if (item.type === "tier") {
-            tiers[item.id] = item.attributes.amount_cents;
-        }
-
-        if (item.type === "user") {
-            users[item.id] = item.attributes.full_name;
-        }
+  return data.data
+    .filter(member => {
+      const tierId = member.relationships.currently_entitled_tiers?.data?.[0]?.id;
+      return tierId && tiers[tierId] >= 1500;
+    })
+    .map(member => {
+      const userId = member.relationships.user.data.id;
+      return users[userId];
     });
-
-    return data.data
-        .filter(member => {
-            const tierId = member.relationships.currently_entitled_tiers?.data?.[0]?.id;
-            return tierId && tiers[tierId] >= 1500;
-        })
-        .map(member => {
-            const userId = member.relationships.user.data.id;
-            return users[userId];
-        });
 }
 
-async function main() {
-    const data = await fetchMembers();
+(async () => {
+  try {
+    const token = await refreshToken();
+    const data = await fetchMembers(token);
     const supporters = filterMembers(data);
-
-    fs.writeFileSync(
-        "supporters.json",
-        JSON.stringify(supporters, null, 2)
-    );
-}
-
-main();
+    fs.writeFileSync("supporters.json", JSON.stringify(supporters, null, 2));
+    console.log("Supporters JSON updated!");
+  } catch (e) {
+    console.error(e.response?.data || e.message);
+    process.exit(1);
+  }
+})();
