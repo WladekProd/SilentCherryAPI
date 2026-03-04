@@ -28,7 +28,7 @@ function parseHtmlToArray(html) {
 function formatPrice(cents) {
   if (cents === 0) return "Free";
   const dollars = cents / 100;
-  return '$' + (Number.isInteger(dollars) ? dollars.toString() : dollars.toFixed(2));
+  return (Number.isInteger(dollars) ? dollars.toString() : dollars.toFixed(2)) + '$';
 }
 
 async function fetchAllTiers(token) {
