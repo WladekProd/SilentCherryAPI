@@ -8,6 +8,8 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -23,7 +25,8 @@ jobs:
       - name: Push supporters.json
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add supporters.json
           git commit -m "Update supporters" || echo "No changes"
-          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/WladekProd/SilentCherryAPI.git HEAD:main
+          # Используем стандартный GITHUB_TOKEN
+          git push
