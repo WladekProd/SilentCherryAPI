@@ -22,9 +22,10 @@ jobs:
           PATREON_TOKEN: ${{ secrets.PATREON_TOKEN }}
           CAMPAIGN_ID: ${{ secrets.CAMPAIGN_ID }}
 
-      - run: |
-          git config user.name "bot"
-          git config user.email "bot@github.com"
+      - name: Push supporters.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add supporters.json
           git commit -m "Update supporters" || echo "No changes"
-          git push
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/WladekProd/SilentCherryAPI.git HEAD:main
