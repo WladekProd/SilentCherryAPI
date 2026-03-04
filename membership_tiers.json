@@ -1,5 +1,27 @@
 [
   {
+    "id": "11527033",
+    "amount_cents": 3000,
+    "description": "<p style=\"\">Access to all categories from the $15 subscription and additional features:</p><ul><li><p style=\"\">Your nickname in games in the premium sponsors category</p></li><li><p style=\"\">Special role in Discord \"Multiverse Overlord\"</p></li></ul>",
+    "url": "/checkout/SilentCherry?rid=11527033",
+    "patron_count": 0,
+    "title": "Multiverse Overlord",
+    "image_url": "https://c10.patreonusercontent.com/4/patreon-media/p/reward/11527033/f413ae1f346a4e849b1b8ee709a1f2ef/eyJ3Ijo0MDB9/3.jpg?token-hash=sBte3YwRb9BTXVfenj-NuploqHuMIbpFNiVIKn3R99A%3D",
+    "published": false,
+    "published_at": null
+  },
+  {
+    "id": "11527021",
+    "amount_cents": 1500,
+    "description": "<p style=\"\">Includes:</p><ul><li><p style=\"\">All previous rewards</p></li><li><p style=\"\">Participate in polls regarding new content, etc.</p></li><li><p style=\"\">Mentioning your nickname in the game</p></li><li><p style=\"\">Special role in Discord \"Reality Bender\"</p></li></ul>",
+    "url": "/checkout/SilentCherry?rid=11527021",
+    "patron_count": 6,
+    "title": "Reality Bender",
+    "image_url": null,
+    "published": true,
+    "published_at": "2023-10-14T14:13:12.643+00:00"
+  },
+  {
     "id": "22078702",
     "amount_cents": 1000,
     "description": "<p style=\"\"><span style=\"color:rgb(255, 255, 255);\"><mark style=\"background-color:rgb(35, 27, 24);\">Includes:</mark></span></p><ul><li><p style=\"\"><em><span style=\"color:rgb(255, 255, 255);\"><mark style=\"background-color:rgb(35, 27, 24);\">All previous rewards</mark></span></em></p></li><li><p style=\"\">Access to all games</p></li><li><p style=\"\">Fresh updates on all games</p></li><li><p style=\"\">Special Discord role \"World Breaker\"</p></li></ul>",
@@ -9,6 +31,17 @@
     "image_url": null,
     "published": true,
     "published_at": "2024-01-16T14:26:11.726+00:00"
+  },
+  {
+    "id": "11527009",
+    "amount_cents": 500,
+    "description": "<p style=\"\"><span style=\"color:rgb(255, 255, 255);\"><mark style=\"background-color:rgb(35, 27, 24);\">Tip to support the development of my game!</mark></span></p><ul><li><p style=\"\"><span style=\"color:rgb(255, 255, 255);\"><mark style=\"background-color:rgb(35, 27, 24);\">Sneak peek posts</mark></span></p></li><li><p style=\"\"><span style=\"color:rgb(255, 255, 255);\"><mark style=\"background-color:rgb(35, 27, 24);\">Wallpapers with game characters for PC and phone</mark></span></p></li><li><p style=\"\">Special role in Discord \"Explorer\"</p></li></ul>",
+    "url": "/checkout/SilentCherry?rid=11527009",
+    "patron_count": 2,
+    "title": "Explorer",
+    "image_url": null,
+    "published": true,
+    "published_at": "2023-10-14T14:11:06.434+00:00"
   },
   {
     "id": "11526926",
