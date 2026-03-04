@@ -10,23 +10,55 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm install axios
-      - run: node script.js
+
+      - name: Install dependencies
+        run: npm install axios
+
+      - name: Run update script
+        id: run_script  # Важно: ID нужен для обращения к результатам
         env:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
           CAMPAIGN_ID: ${{ secrets.CAMPAIGN_ID }}
+        run: |
+          # Запускаем скрипт и ловим вывод
+          OUTPUT=$(node script.js)
+          echo "$OUTPUT"
+          
+          # Извлекаем токен
+          NEW_REF_TOKEN=$(echo "$OUTPUT" | grep "NEW_REFRESH_TOKEN=" | cut -d'=' -f2)
+          
+          # Передаем значение в OUTPUT шага (вместо GITHUB_ENV)
+          if [ ! -z "$NEW_REF_TOKEN" ]; then
+            echo "token=$NEW_REF_TOKEN" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update REFRESH_TOKEN Secret
+        # Проверяем наличие токена через outputs
+        if: steps.run_script.outputs.token != ''
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          # Используем значение из предыдущего шага
+          gh secret set REFRESH_TOKEN --body "${{ steps.run_script.outputs.token }}"
+
       - name: Push supporters.json
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add supporters.json
-          git commit -m "Update supporters" || echo "No changes"
-          # Используем стандартный GITHUB_TOKEN
-          git push
+          if git commit -m "Update supporters"; then
+            git push
+          else
+            echo "No changes to commit"
+          fi
