@@ -6,7 +6,7 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 const CAMPAIGN_ID = process.env.CAMPAIGN_ID;
 
-async function refreshToken() {
+async function refreshTokens() {
   const res = await axios.post("https://www.patreon.com/api/oauth2/token", null, {
     params: {
       grant_type: "refresh_token",
@@ -16,7 +16,10 @@ async function refreshToken() {
     },
     headers: { "Content-Type": "application/x-www-form-urlencoded" }
   });
-  return res.data.access_token;
+  return {
+    access: res.data.access_token,
+    refresh: res.data.refresh_token 
+  };
 }
 
 async function fetchMembers(token) {
@@ -48,10 +51,14 @@ function filterMembers(data) {
 
 (async () => {
   try {
-    const token = await refreshToken();
-    const data = await fetchMembers(token);
+    const tokens = await refreshTokens();
+    const data = await fetchMembers(tokens.access);
     const supporters = filterMembers(data);
     fs.writeFileSync("supporters.json", JSON.stringify(supporters, null, 2));
+
+    console.log(`::add-mask::${tokens.refresh}`);
+    console.log(`NEW_REFRESH_TOKEN=${tokens.refresh}`);
+    
     console.log("Supporters JSON updated!");
   } catch (e) {
     console.error(e.response?.data || e.message);
