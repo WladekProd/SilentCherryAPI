@@ -6,68 +6,90 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 const CAMPAIGN_ID = process.env.CAMPAIGN_ID;
 
-async function fetchMembers(token) {
-  const res = await axios.get(`https://www.patreon.com/api/oauth2/v2/campaigns/${CAMPAIGN_ID}/members`, {
+async function fetchAllTiers(token) {
+  const res = await axios.get(`https://www.patreon.com/api/oauth2/v2/campaigns/${CAMPAIGN_ID}`, {
     headers: { Authorization: `Bearer ${token}` },
-    params: { 
-      include: "currently_entitled_tiers,user", 
-      "fields[user]": "full_name", 
-      // Запрашиваем максимум полезной информации о самом тире
-      "fields[tier]": "title,amount_cents,description,image_url,url,patron_count,published,published_at" 
+    params: {
+      include: "tiers",
+      "fields[tier]": "title,amount_cents,description,image_url,url,patron_count,published,published_at"
     }
   });
   return res.data;
 }
 
-function processPatreonData(data) {
-  const tiersInfo = {};
-  const usersInfo = {};
-  const allTiers = []; // Массив для файла tiers.json
+async function fetchAllMembers(token) {
+  let allMembers = [];
+  let allIncluded = [];
+  
+  let nextUrl = `https://www.patreon.com/api/oauth2/v2/campaigns/${CAMPAIGN_ID}/members`;
+  let params = { 
+    include: "currently_entitled_tiers,user", 
+    "fields[user]": "full_name" 
+  };
 
-  // 1. Собираем данные о тирах и пользователях
-  if (data.included) {
-    data.included.forEach(item => {
+  while (nextUrl) {
+    const isFirstPage = nextUrl.includes('?') === false;
+    const res = await axios.get(nextUrl, {
+      headers: { Authorization: `Bearer ${token}` },
+      params: isFirstPage ? params : {}
+    });
+
+    allMembers.push(...res.data.data);
+    if (res.data.included) {
+      allIncluded.push(...res.data.included);
+    }
+
+    nextUrl = res.data.links?.next || null;
+  }
+  
+  return { data: allMembers, included: allIncluded };
+}
+
+function processPatreonData(campaignData, membersData) {
+  const tiersInfo = {};
+  const allTiers = [];
+  const tiersResult = {};
+
+  if (campaignData.included) {
+    campaignData.included.forEach(item => {
       if (item.type === "tier") {
-        // Сохраняем всю пришедшую информацию о тире
-        const tierData = {
-          id: item.id,
-          ...item.attributes // Разворачиваем все поля (title, description, image_url и т.д.)
-        };
+        const tierData = { id: item.id, ...item.attributes };
         tiersInfo[item.id] = tierData;
         allTiers.push(tierData);
+        
+        tiersResult[item.id] = {
+          tierId: item.id,
+          tierName: tierData.title,
+          amount_cents: tierData.amount_cents,
+          supporters: []
+        };
       }
+    });
+  }
+
+  const usersInfo = {};
+  
+  if (membersData.included) {
+    membersData.included.forEach(item => {
       if (item.type === "user") {
         usersInfo[item.id] = item.attributes.full_name;
       }
     });
   }
 
-  const tiersResult = {};
-
-  // 2. Распределяем спонсоров по тирам
-  data.data.forEach(member => {
+  membersData.data.forEach(member => {
     const tierData = member.relationships.currently_entitled_tiers?.data;
     if (!tierData || tierData.length === 0) return;
 
     const tierId = tierData[0].id;
-    const tier = tiersInfo[tierId];
     const userId = member.relationships.user?.data?.id;
     const userName = usersInfo[userId];
 
-    if (tier && userName) {
-      if (!tiersResult[tierId]) {
-        tiersResult[tierId] = {
-          tierId: tierId,
-          tierName: tier.title,
-          amount_cents: tier.amount_cents,
-          supporters: []
-        };
-      }
+    if (tiersResult[tierId] && userName) {
       tiersResult[tierId].supporters.push(userName);
     }
   });
 
-  // 3. Сортируем оба массива (от дорогих тиров к дешевым)
   const sortedSupporters = Object.values(tiersResult).sort((a, b) => b.amount_cents - a.amount_cents);
   const sortedTiers = allTiers.sort((a, b) => b.amount_cents - a.amount_cents);
 
@@ -89,12 +111,11 @@ function processPatreonData(data) {
     const accessToken = res.data.access_token;
     const newRefreshToken = res.data.refresh_token;
 
-    const data = await fetchMembers(accessToken);
+    const campaignData = await fetchAllTiers(accessToken);
+    const membersData = await fetchAllMembers(accessToken);
     
-    // Получаем сразу оба объекта
-    const { sortedSupporters, sortedTiers } = processPatreonData(data);
+    const { sortedSupporters, sortedTiers } = processPatreonData(campaignData, membersData);
     
-    // Сохраняем в два разных файла
     fs.writeFileSync("supporters.json", JSON.stringify(sortedSupporters, null, 2));
     fs.writeFileSync("membership_tiers.json", JSON.stringify(sortedTiers, null, 2));
     
@@ -102,7 +123,7 @@ function processPatreonData(data) {
     console.log(`NEW_REFRESH_TOKEN=${newRefreshToken}`);
     console.log(`---DATA_END---`);
     
-    console.log("Supporters and Tiers JSONs updated!");
+    console.log("Supporters and Tiers JSONs completely updated!");
   } catch (e) {
     console.error(e.response?.data || e.message);
     process.exit(1);
