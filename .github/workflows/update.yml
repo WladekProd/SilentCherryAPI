@@ -1,0 +1,30 @@
+name: Update Patreon Supporters
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: npm install axios
+
+      - run: node script.js
+        env:
+          PATREON_TOKEN: ${{ secrets.PATREON_TOKEN }}
+          CAMPAIGN_ID: ${{ secrets.CAMPAIGN_ID }}
+
+      - run: |
+          git config user.name "bot"
+          git config user.email "bot@github.com"
+          git add supporters.json
+          git commit -m "Update supporters" || echo "No changes"
+          git push
