@@ -2,7 +2,7 @@ name: Update Patreon Supporters
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 3 * * *"
   workflow_dispatch:
 
 jobs:
@@ -10,18 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-
       - run: npm install axios
-
       - run: node script.js
         env:
-          PATREON_TOKEN: ${{ secrets.PATREON_TOKEN }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
           CAMPAIGN_ID: ${{ secrets.CAMPAIGN_ID }}
-
       - name: Push supporters.json
         run: |
           git config user.name "github-actions[bot]"
