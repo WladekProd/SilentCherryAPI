@@ -56,15 +56,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
+          # Stage the files
           git add supporters.json membership_tiers.json
           
-          # Only commit if there are changes
-          if git commit -m "Update Patreon data"; then
-            # Pull remote changes and rebase your commit on top of them
+          # Check if there are actually any changes to commit
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Changes detected. Committing and pushing..."
+            git commit -m "Update Patreon data"
             git pull --rebase origin main
             git push
           else
-            echo "No changes to commit"
-          fi
-            echo "No changes to commit"
+            echo "No changes to commit. Skipping push."
           fi
