@@ -8,12 +8,18 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    # This prevents multiple runs from overlapping
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true 
     permissions:
       contents: write
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Updated to v4
+        with:
+          fetch-depth: 0 # Fetches all history so rebase works correctly
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -24,42 +30,41 @@ jobs:
         run: npm install axios
 
       - name: Run update script
-        id: run_script  # Важно: ID нужен для обращения к результатам
+        id: run_script
         env:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
           CAMPAIGN_ID: ${{ secrets.CAMPAIGN_ID }}
         run: |
-          # Запускаем скрипт и ловим вывод
           OUTPUT=$(node script.js)
           echo "$OUTPUT"
-          
-          # Извлекаем токен
           NEW_REF_TOKEN=$(echo "$OUTPUT" | grep "NEW_REFRESH_TOKEN=" | cut -d'=' -f2)
-          
-          # Передаем значение в OUTPUT шага (вместо GITHUB_ENV)
           if [ ! -z "$NEW_REF_TOKEN" ]; then
             echo "token=$NEW_REF_TOKEN" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Update REFRESH_TOKEN Secret
-        # Проверяем наличие токена через outputs
         if: steps.run_script.outputs.token != ''
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          # Используем значение из предыдущего шага
           gh secret set REFRESH_TOKEN --body "${{ steps.run_script.outputs.token }}"
 
       - name: Push JSON files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Добавляем оба файла в коммит:
+          
           git add supporters.json membership_tiers.json
+          
+          # Only commit if there are changes
           if git commit -m "Update Patreon data"; then
+            # Pull remote changes and rebase your commit on top of them
+            git pull --rebase origin main
             git push
           else
+            echo "No changes to commit"
+          fi
             echo "No changes to commit"
           fi
