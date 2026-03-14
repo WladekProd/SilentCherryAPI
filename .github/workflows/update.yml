@@ -56,15 +56,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          # Stage the files
+          # Явно добавляем только те файлы, которые нам нужны
           git add supporters.json membership_tiers.json
           
-          # Check if there are actually any changes to commit
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "Changes detected. Committing and pushing..."
+          # Проверяем, есть ли изменения именно в этих файлах (staged changes)
+          if ! git diff --cached --exit-code; then
+            echo "Changes detected in JSON files. Committing..."
             git commit -m "Update Patreon data"
             git pull --rebase origin main
             git push
           else
-            echo "No changes to commit. Skipping push."
+            echo "No changes in JSON files. Skipping push."
           fi
