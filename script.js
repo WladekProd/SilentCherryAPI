@@ -145,6 +145,11 @@ function processPatreonData(campaignData, membersData) {
     const accessToken = res.data.access_token;
     const newRefreshToken = res.data.refresh_token;
 
+    if (process.env.GITHUB_OUTPUT) {
+      console.log(`::add-mask::${newRefreshToken}`);
+      fs.appendFileSync(process.env.GITHUB_OUTPUT, `token=${newRefreshToken}\n`);
+    }
+
     const campaignData = await fetchAllTiers(accessToken);
     const membersData = await fetchAllMembers(accessToken);
     
