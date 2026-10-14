@@ -11,7 +11,7 @@ jobs:
     # This prevents multiple runs from overlapping
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true 
+      cancel-in-progress: false
     permissions:
       contents: write
 
@@ -36,20 +36,14 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
           CAMPAIGN_ID: ${{ secrets.CAMPAIGN_ID }}
-        run: |
-          OUTPUT=$(node script.js)
-          echo "$OUTPUT"
-          NEW_REF_TOKEN=$(echo "$OUTPUT" | grep "NEW_REFRESH_TOKEN=" | cut -d'=' -f2)
-          if [ ! -z "$NEW_REF_TOKEN" ]; then
-            echo "token=$NEW_REF_TOKEN" >> "$GITHUB_OUTPUT"
-          fi
+        run: node script.js
 
       - name: Update REFRESH_TOKEN Secret
-        if: steps.run_script.outputs.token != ''
+        if: always() && steps.run_script.outputs.token != ''
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
-        run: |
-          gh secret set REFRESH_TOKEN --body "${{ steps.run_script.outputs.token }}"
+          NEW_TOKEN: ${{ steps.run_script.outputs.token }}
+        run: gh secret set REFRESH_TOKEN --body "$NEW_TOKEN"
 
       - name: Push JSON files
         run: |
