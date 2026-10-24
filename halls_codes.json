@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "codes": [
+    {
+      "hash": "c43cca5a87bf841f9f554be7f3392990ae5c782991bbe42fc0e730f5ec00f594",
+      "title": "v0.3.0 release gift (HALLS-030)",
+      "expires": "",
+      "builds": [],
+      "rewards": [
+        { "type": "money", "amount": 1500 },
+        { "type": "charges", "id": "c_cleaning_kit", "amount": 2 }
+      ]
+    },
+    {
+      "hash": "563a934c1f352c3d5101604d980b21fd8fd7125170d95d0a2a889a8ce860cb69",
+      "title": "November Patreon package (CHERRY-NOV26)",
+      "expires": "2026-11-30",
+      "builds": [],
+      "rewards": [
+        { "type": "money", "amount": 3000 },
+        { "type": "charges", "id": "c_xray", "amount": 2 },
+        { "type": "photos", "amount": 3, "rarity": "Rare" },
+        { "type": "buff", "id": "sell", "value": 1.5, "hours": 24 },
+        { "type": "message", "text": "Thank you for supporting the game!" }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "pool_party_nov",
+      "title": "Pool Party Weekend",
+      "description": "Buyers are crazy about photos this weekend: sell prices x1.5, better odds for rare shots.",
+      "start": "2026-11-07",
+      "end": "2026-11-09",
+      "modifiers": { "sell_mult": 1.5, "rare_odds": 1.3 }
+    }
+  ]
+}
